@@ -1,4 +1,4 @@
-package ru.vsu.remezov.app;
+package ru.vsu.remezov.app.console;
 
 import ru.vsu.remezov.presentation.controller.DepartmentController;
 import ru.vsu.remezov.presentation.controller.EmployeeController;
