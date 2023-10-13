@@ -7,8 +7,8 @@ import ru.vsu.remezov.usecase.implementation.DepartmentService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class DepartmentController {
     private final DepartmentService departmentService = new DepartmentService(
@@ -20,17 +20,31 @@ public class DepartmentController {
         departmentService.create(Department.builder().name(name).employees(employees).build());
     }
     public Map<String, Integer> getAllSalaryDepartments() {
-        var departments = departmentService.findAll();
-        return departments.stream()
-                .collect(Collectors.toMap(
-                        Department::name,
-                        department -> department.employees().stream()
-                                .mapToInt(Employee::salary)
-                                .sum()
-                ));
+        return departmentService.getAllSalaryDepartments();
+    }
+    public boolean isPresent(String id) {
+        Optional<Department> department = departmentService.findById(id);
+        return department.isPresent();
+    }
+    public List<Department> findAllDepartments() {
+        return departmentService.findAll();
     }
 
-    public List<Department> getAllDepartments() {
-        return departmentService.findAll();
+    public void updateDepartments(Employee employee) {
+        List<Department> departments = findAllDepartments();
+        for (Department department: departments) {
+            departmentService.update(department, employee);
+        }
+    }
+
+    public void addEmployeesToDepartment(String id, List<Employee> employees) {
+        Optional<Department> department = departmentService.findById(id);
+        departmentService.addEmployees(department.get(), employees);
+
+    }
+
+    public void deleteEmployeesFromDepartment(String id, List<Employee> employees) {
+        Optional<Department> department = departmentService.findById(id);
+        departmentService.deleteEmployees(department.get(), employees);
     }
 }

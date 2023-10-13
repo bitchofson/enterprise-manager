@@ -1,7 +1,7 @@
 package ru.vsu.remezov.usecase.implementation;
 
 import ru.vsu.remezov.domain.Employee;
-import ru.vsu.remezov.infrastructure.repository.IRepository;
+import ru.vsu.remezov.infrastructure.repository.Repository;
 import ru.vsu.remezov.usecase.IdGenerator;
 
 import java.util.List;
@@ -9,22 +9,32 @@ import java.util.Optional;
 
 public class EmployeeService {
 
-    private final IRepository<Employee> repository;
+    private final Repository<Employee> repository;
     private final IdGenerator idGenerator;
 
-    public EmployeeService(IRepository<Employee> repository, IdGenerator idGenerator) {
+    public EmployeeService(Repository<Employee> repository, IdGenerator idGenerator) {
         this.repository = repository;
         this.idGenerator = idGenerator;
     }
 
-    public Employee create(Employee employee) {
+    public void create(String fullName, String age, int salary) {
         Employee employeeToSave = Employee.builder()
                 .id(idGenerator.generate())
-                .fullName(employee.fullName())
-                .age(employee.age())
-                .salary(employee.salary())
+                .fullName(fullName)
+                .age(age)
+                .salary(salary)
                 .build();
-        return repository.create(employeeToSave);
+        repository.save(employeeToSave);
+    }
+
+    public Employee edit(String id, String fullName, String age, int salary) {
+        Employee employeeToSave = Employee.builder()
+                .id(id)
+                .fullName(fullName)
+                .age(age)
+                .salary(salary)
+                .build();
+        return repository.save(employeeToSave);
     }
 
     public Employee delete(String id) {
@@ -38,4 +48,5 @@ public class EmployeeService {
     public List<Employee> findAll() {
         return repository.findAll();
     }
+
 }

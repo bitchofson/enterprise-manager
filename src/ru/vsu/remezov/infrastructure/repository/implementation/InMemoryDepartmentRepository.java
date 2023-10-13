@@ -1,19 +1,18 @@
 package ru.vsu.remezov.infrastructure.repository.implementation;
 
 import ru.vsu.remezov.domain.Department;
-import ru.vsu.remezov.infrastructure.repository.IRepository;
+import ru.vsu.remezov.infrastructure.repository.Repository;
 
 import java.util.*;
 
-public class InMemoryDepartmentRepository implements IRepository<Department> {
+public class InMemoryDepartmentRepository implements Repository<Department> {
 
     private final Map<String, Department> memoryDb = new HashMap<>();
 
     @Override
-    public Department create(Department object) {
-        memoryDb.put(object.id(), object);
-        System.out.println("Отдел с id: "+ object.id() +" успешно создан и добавлен в базу данных.");
-        return object;
+    public Department save(Department object) {
+        System.out.println("Отдел с id: "+ object.id() +" успешно сохранен в базе данных.");
+        return memoryDb.put(object.id(), object);
     }
 
     @Override

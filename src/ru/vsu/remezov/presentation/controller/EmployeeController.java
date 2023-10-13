@@ -16,7 +16,11 @@ public class EmployeeController {
     );
 
     public void createEmployee(String fullName, String age, int salary) {
-        employeeService.create(Employee.builder().fullName(fullName).age(age).salary(salary).build());
+        employeeService.create(fullName, age, salary);
+    }
+
+    public Employee editEmployee(String id, String fullName, String age, int salary) {
+        return employeeService.edit(id, fullName, age, salary);
     }
 
     public List<Employee> getEmployees(String[] ids) {
@@ -27,7 +31,13 @@ public class EmployeeController {
         }
         return employees;
     }
-    public List<Employee> getAllEmployees() {
+
+    public boolean isPresent(String id) {
+        Optional<Employee> employee = employeeService.findById(id);
+        return employee.isPresent();
+    }
+
+    public List<Employee> findAllEmployees() {
         return employeeService.findAll();
     }
 
