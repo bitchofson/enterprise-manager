@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  postgres-enterprise-manager:
+    image: postgres:alpine3.17
+    container_name: db_postgres_enterprise_manager
+    restart: always
+    ports:
+      - '5432:5432'
+    env_file:
+      - ../.env
+    volumes:
+      - postgres_data_enterprise_manager:/var/lib/postgresql/data
+    networks:
+      - backend
+
+volumes:
+  postgres_data_enterprise_manager:
+
+networks:
+  backend:
+    driver: bridge

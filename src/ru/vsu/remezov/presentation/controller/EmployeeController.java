@@ -7,12 +7,12 @@ import ru.vsu.remezov.usecase.implementation.EmployeeService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
+
 
 public class EmployeeController {
     private final EmployeeService employeeService = new EmployeeService(
-            new InMemoryEmployeeRepository(),
-            () -> UUID.randomUUID().toString()
+            new InMemoryEmployeeRepository()
     );
 
     public void createEmployee(String fullName, String age, int salary) {

@@ -8,6 +8,7 @@ import ru.vsu.remezov.usecase.IdGenerator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class DepartmentService {
@@ -15,9 +16,9 @@ public class DepartmentService {
     Repository<Department> repository;
     IdGenerator idGenerator;
 
-    public DepartmentService(Repository<Department> repository, IdGenerator idGenerator) {
+    public DepartmentService(Repository<Department> repository) {
         this.repository = repository;
-        this.idGenerator = idGenerator;
+        this.idGenerator = () -> UUID.randomUUID().toString();
     }
 
     public void create(Department department) {

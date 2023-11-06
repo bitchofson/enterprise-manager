@@ -1,3 +1,9 @@
 ### IntelliJ IDEA ###
 out/
 .idea/
+
+### Files ###
+.env
+
+### Directories ###
+sql/

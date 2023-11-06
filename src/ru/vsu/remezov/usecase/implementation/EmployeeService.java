@@ -6,15 +6,17 @@ import ru.vsu.remezov.usecase.IdGenerator;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class EmployeeService {
 
     private final Repository<Employee> repository;
     private final IdGenerator idGenerator;
 
-    public EmployeeService(Repository<Employee> repository, IdGenerator idGenerator) {
+
+    public EmployeeService(Repository<Employee> repository) {
         this.repository = repository;
-        this.idGenerator = idGenerator;
+        this.idGenerator = () -> UUID.randomUUID().toString();
     }
 
     public void create(String fullName, String age, int salary) {

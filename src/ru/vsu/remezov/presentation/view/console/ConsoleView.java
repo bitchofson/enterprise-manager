@@ -30,12 +30,12 @@ public class ConsoleView implements View {
                 departmentController, employeeController, input,
                 departmentCreatorMenu, employeeCreatorMenu,
                 departmentEditorMenu, employeeEditorMenu
-                );
+        );
     }
 
     @Override
     public void view() {
-       mainMenu.show();
+        mainMenu.show();
     }
 
 }

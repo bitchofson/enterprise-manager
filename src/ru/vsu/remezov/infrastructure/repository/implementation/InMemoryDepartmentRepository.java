@@ -8,7 +8,6 @@ import java.util.*;
 public class InMemoryDepartmentRepository implements Repository<Department> {
 
     private final Map<String, Department> memoryDb = new HashMap<>();
-
     @Override
     public Department save(Department object) {
         System.out.println("Отдел с id: "+ object.id() +" успешно сохранен в базе данных.");

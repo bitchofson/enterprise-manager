@@ -14,5 +14,7 @@ public class Main {
         var console = new ConsoleView(employeeController, departmentController);
         console.view();
 
+
+
     }
 }

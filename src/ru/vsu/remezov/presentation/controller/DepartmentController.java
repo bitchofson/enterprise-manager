@@ -8,12 +8,12 @@ import ru.vsu.remezov.usecase.implementation.DepartmentService;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
+
+
 
 public class DepartmentController {
     private final DepartmentService departmentService = new DepartmentService(
-            new InMemoryDepartmentRepository(),
-            () -> UUID.randomUUID().toString()
+            new InMemoryDepartmentRepository()
     );
 
     public void createDepartment(String name, List<Employee> employees) {
