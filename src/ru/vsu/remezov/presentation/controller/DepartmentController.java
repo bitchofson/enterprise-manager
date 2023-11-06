@@ -2,49 +2,55 @@ package ru.vsu.remezov.presentation.controller;
 
 import ru.vsu.remezov.domain.Department;
 import ru.vsu.remezov.domain.Employee;
-import ru.vsu.remezov.infrastructure.repository.implementation.InMemoryDepartmentRepository;
 import ru.vsu.remezov.usecase.implementation.DepartmentService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-
+import java.util.stream.Collectors;
 
 public class DepartmentController {
-    private final DepartmentService departmentService = new DepartmentService(
-            new InMemoryDepartmentRepository()
-    );
+    private final DepartmentService departmentService;
 
-    public void createDepartment(String name, List<Employee> employees) {
-        departmentService.create(Department.builder().name(name).employees(employees).build());
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
-    public Map<String, Integer> getAllSalaryDepartments() {
-        return departmentService.getAllSalaryDepartments();
+
+    public void createDepartment(Department department) {
+        departmentService.create(department);
     }
-    public boolean isPresent(String id) {
-        Optional<Department> department = departmentService.findById(id);
-        return department.isPresent();
-    }
+
     public List<Department> findAllDepartments() {
         return departmentService.findAll();
     }
 
-    public void updateDepartments(Employee employee) {
-        List<Department> departments = findAllDepartments();
-        for (Department department: departments) {
-            departmentService.update(department, employee);
+    public void updateDepartment(Department departmentOld,
+                                  Department departmentNew) {
+        departmentService.update(departmentOld, departmentNew);
+    }
+
+    public void deleteDepartment(Department department) {
+        departmentService.delete(department);
+    }
+
+    public boolean isPresent(int id) {
+        return departmentService.findById(id);
+    }
+
+    public Map<String, Integer> getDepartmentSalarySums(List<Employee> employees) {
+        HashMap<String, Integer> departmentSalarySums = new HashMap<>();
+        for (Employee employee: employees) {
+            if (employee.department().name() != null) {
+                String departmentName = employee.department().name();
+                int salary = employee.salary();
+                if (!departmentSalarySums.containsKey(departmentName)) {
+                    departmentSalarySums.put(departmentName, salary);
+                } else {
+                    departmentSalarySums.put(departmentName, departmentSalarySums.get(departmentName) + salary);
+                }
+            }
         }
-    }
 
-    public void addEmployeesToDepartment(String id, List<Employee> employees) {
-        Optional<Department> department = departmentService.findById(id);
-        departmentService.addEmployees(department.get(), employees);
-
-    }
-
-    public void deleteEmployeesFromDepartment(String id, List<Employee> employees) {
-        Optional<Department> department = departmentService.findById(id);
-        departmentService.deleteEmployees(department.get(), employees);
+        return departmentSalarySums;
     }
 }

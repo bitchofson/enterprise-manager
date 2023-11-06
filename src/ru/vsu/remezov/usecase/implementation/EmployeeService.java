@@ -1,54 +1,42 @@
 package ru.vsu.remezov.usecase.implementation;
 
 import ru.vsu.remezov.domain.Employee;
-import ru.vsu.remezov.infrastructure.repository.Repository;
-import ru.vsu.remezov.usecase.IdGenerator;
+import ru.vsu.remezov.infrastructure.repository.IRepository;
+import ru.vsu.remezov.usecase.IService;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
-public class EmployeeService {
+public class EmployeeService implements IService<Employee> {
 
-    private final Repository<Employee> repository;
-    private final IdGenerator idGenerator;
+    IRepository<Employee> IRepository;
 
-
-    public EmployeeService(Repository<Employee> repository) {
-        this.repository = repository;
-        this.idGenerator = () -> UUID.randomUUID().toString();
+    public EmployeeService(IRepository<Employee> IRepository) {
+        this.IRepository = IRepository;
     }
 
-    public void create(String fullName, String age, int salary) {
-        Employee employeeToSave = Employee.builder()
-                .id(idGenerator.generate())
-                .fullName(fullName)
-                .age(age)
-                .salary(salary)
-                .build();
-        repository.save(employeeToSave);
+    @Override
+    public void create(Employee employee) {
+        IRepository.create(employee);
     }
 
-    public Employee edit(String id, String fullName, String age, int salary) {
-        Employee employeeToSave = Employee.builder()
-                .id(id)
-                .fullName(fullName)
-                .age(age)
-                .salary(salary)
-                .build();
-        return repository.save(employeeToSave);
+    @Override
+    public void update(Employee employeeOld,
+                       Employee employeeNew) {
+        IRepository.update(employeeOld, employeeNew);
     }
 
-    public Employee delete(String id) {
-        return repository.delete(id);
+    @Override
+    public void delete(Employee employee) {
+        IRepository.delete(employee);
     }
 
-    public Optional<Employee> findById(String id) {
-        return repository.findById(id);
+    @Override
+    public boolean findById(int id) {
+        return IRepository.findById(id);
     }
 
+    @Override
     public List<Employee> findAll() {
-        return repository.findAll();
+        return IRepository.findAll();
     }
-
 }

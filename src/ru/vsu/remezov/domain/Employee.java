@@ -1,6 +1,6 @@
 package ru.vsu.remezov.domain;
 
-public record Employee(String id, String fullName, String age, int salary) {
+public record Employee(int id, String fullName, int age, int salary, Department department) {
 
     public static EmployeeBuilder builder() {
         return new EmployeeBuilder();
@@ -8,17 +8,18 @@ public record Employee(String id, String fullName, String age, int salary) {
 
     public static class EmployeeBuilder {
 
-        private String id;
+        private int id;
         private String fullName;
-        private String age;
+        private int age;
         private int salary;
+        private Department department;
 
         public EmployeeBuilder fullName(String fullName) {
             this.fullName = fullName;
             return this;
         }
 
-        public EmployeeBuilder age(String age) {
+        public EmployeeBuilder age(int age) {
             this.age = age;
             return this;
         }
@@ -28,14 +29,18 @@ public record Employee(String id, String fullName, String age, int salary) {
             return this;
         }
 
-        public EmployeeBuilder id(String id) {
+        public EmployeeBuilder id(int id) {
             this.id = id;
             return this;
         }
 
+        public EmployeeBuilder department(Department department) {
+            this.department = department;
+            return this;
+        }
 
         public Employee build() {
-            return new Employee(id, fullName, age, salary);
+            return new Employee(id, fullName, age, salary, department);
         }
     }
 
@@ -43,6 +48,7 @@ public record Employee(String id, String fullName, String age, int salary) {
     public String toString() {
         return "id: " + this.id + " ФИО: " + this.fullName + " "
                 + " Возраст: " + this.age + " "
-                + " Заработная плата: " + this.salary;
+                + " Заработная плата: " + this.salary + " "
+                + "Департамент: " + this.department.name();
     }
 }

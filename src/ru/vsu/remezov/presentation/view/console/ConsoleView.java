@@ -20,10 +20,10 @@ public class ConsoleView implements View {
 
         this.input = new Scanner(System.in);
 
-        departmentCreatorMenu = new DepartmentCreatorMenuManager(departmentController, employeeController, input);
-        employeeCreatorMenu = new EmployeeCreatorMenuManager(employeeController, input);
+        departmentCreatorMenu = new DepartmentCreatorMenuManager(departmentController, input);
+        employeeCreatorMenu = new EmployeeCreatorMenuManager(employeeController, departmentController, input);
 
-        departmentEditorMenu = new DepartmentEditorMenuManager(departmentController, employeeController, input);
+        departmentEditorMenu = new DepartmentEditorMenuManager(departmentController, input);
         employeeEditorMenu = new EmployeeEditorMenuManager(employeeController, departmentController, input);
 
         mainMenu = new MainMenuManager(

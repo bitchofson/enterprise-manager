@@ -1,99 +1,44 @@
 package ru.vsu.remezov.usecase.implementation;
 
 import ru.vsu.remezov.domain.Department;
-import ru.vsu.remezov.domain.Employee;
-import ru.vsu.remezov.infrastructure.repository.Repository;
-import ru.vsu.remezov.usecase.IdGenerator;
+import ru.vsu.remezov.infrastructure.repository.IRepository;
+import ru.vsu.remezov.usecase.IService;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
-public class DepartmentService {
 
-    Repository<Department> repository;
-    IdGenerator idGenerator;
+public class DepartmentService implements IService<Department> {
 
-    public DepartmentService(Repository<Department> repository) {
-        this.repository = repository;
-        this.idGenerator = () -> UUID.randomUUID().toString();
+    IRepository<Department> IRepository;
+
+    public DepartmentService(IRepository<Department> IRepository) {
+        this.IRepository = IRepository;
     }
 
+    @Override
     public void create(Department department) {
-        Department departmentToSave = Department.builder()
-                .id(idGenerator.generate())
-                .name(department.name())
-                .employees(department.employees())
-                .build();
-        repository.save(departmentToSave);
+        IRepository.create(department);
     }
 
-    public void update(Department department, Employee employee) {
-
-        List <Employee> employees = department.employees();
-        employees.removeIf(e -> e.id().equals(employee.id()));
-        employees.add(employee);
-
-        Department departmentToSave = Department.builder()
-                .id(department.id())
-                .name(department.name())
-                .employees(employees)
-                .build();
-        repository.save(departmentToSave);
+    @Override
+    public void update(Department departmentOld,
+                       Department departmentNew) {
+        IRepository.update(departmentOld, departmentNew);
     }
 
-    public Department delete(String id) {
-        return repository.delete(id);
+    @Override
+    public void delete(Department department) {
+        IRepository.delete(department);
     }
 
-    public Optional<Department> findById(String id) {
-        return repository.findById(id);
+    @Override
+    public boolean findById(int id) {
+        return IRepository.findById(id);
     }
 
+    @Override
     public List<Department> findAll() {
-        return repository.findAll();
-    }
-    public Map<String, Integer> getAllSalaryDepartments() {
-        var departments = findAll();
-        return departments.stream()
-                .collect(Collectors.toMap(
-                        Department::name,
-                        department -> department.employees().stream()
-                                .mapToInt(Employee::salary)
-                                .sum()
-                ));
+        return IRepository.findAll();
     }
 
-    public void deleteEmployees(Department department, List<Employee> employees) {
-        List <Employee> employeesDepartment = department.employees();
-
-        for (Employee employee: employees) {
-            employeesDepartment.removeIf(e -> e.id().equals(employee.id()));
-        }
-
-        Department departmentToSave = Department.builder()
-                .id(department.id())
-                .name(department.name())
-                .employees(employeesDepartment)
-                .build();
-        repository.save(departmentToSave);
-    }
-
-    public void addEmployees(Department department, List<Employee> employees) {
-        List <Employee> employeesDepartment = department.employees();
-
-        for (Employee employee: employees) {
-            employeesDepartment.removeIf(e -> e.id().equals(employee.id()));
-            employeesDepartment.add(employee);
-        }
-
-        Department departmentToSave = Department.builder()
-                .id(department.id())
-                .name(department.name())
-                .employees(employeesDepartment)
-                .build();
-        repository.save(departmentToSave);
-    }
 }

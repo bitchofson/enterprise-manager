@@ -53,15 +53,37 @@ public class MainMenuManager implements MenuManager {
     }
     private boolean handleUserInput(final int choice) {
         switch (choice) {
-            case 1 -> employeeController.findAllEmployees().forEach(System.out::println);
-            case 2 -> {
-                departmentController.findAllDepartments().forEach(System.out::println);
-                departmentController.getAllSalaryDepartments().forEach((key, value) -> System.out.println("Общая сумма зарплат для отдела " + key + " " + value));
+            case 1 -> {
+                System.out.println("__________________________________________________________________________________");
+                employeeController.findAllEmployees().forEach(System.out::println);
+                System.out.println("__________________________________________________________________________________");
             }
-            case 3 -> employeeCreatorMenu.show();
-            case 4 -> departmentCreatorMenu.show();
-            case 5 -> employeeEditorMenu.show();
-            case 6 -> departmentEditorMenu.show();
+            case 2 -> {
+                System.out.println("__________________________________________________________________________________");
+                departmentController.findAllDepartments().forEach(System.out::println);
+                departmentController.getDepartmentSalarySums(employeeController.findAllEmployees()).forEach((key, value) -> System.out.println("Общая сумма зарплат для отдела " + key + " " + value));
+                System.out.println("__________________________________________________________________________________");
+            }
+            case 3 -> {
+                System.out.println("__________________________________________________________________________________");
+                employeeCreatorMenu.show();
+                System.out.println("__________________________________________________________________________________");
+              }
+            case 4 -> {
+                System.out.println("__________________________________________________________________________________");
+                departmentCreatorMenu.show();
+                System.out.println("__________________________________________________________________________________");
+              }
+            case 5 -> {
+                System.out.println("__________________________________________________________________________________");
+                employeeEditorMenu.show();
+                System.out.println("__________________________________________________________________________________");
+              }
+            case 6 -> {
+                System.out.println("__________________________________________________________________________________");
+                departmentEditorMenu.show();
+                System.out.println("__________________________________________________________________________________");
+              }
             case 7 -> { return true; }
             default -> System.out.println("Введите корректное число в диапозоне от 1 до 7!\n");
         }
