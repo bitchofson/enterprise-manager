@@ -96,47 +96,18 @@ public class PostgresEmployeeRepository implements IRepository<Employee> {
 
     @Override
     public List<Employee> findAll() {
-
-        List<Employee> resultWithOutName = findWithOutName();
-        List<Employee> resultWithName = new ArrayList<>();
-
-        try {
-            Statement statement = this.connection.getConnection().createStatement();
-            for (Employee employee : resultWithOutName) {
-                ResultSet resultSet = statement.executeQuery(String.format("SELECT name from department WHERE department.id=%d", employee.department().id()));
-                if (resultSet.next()) {
-                    resultWithName.add(Employee.builder()
-                            .id(employee.id())
-                            .fullName(employee.fullName())
-                            .age(employee.age())
-                            .salary(employee.salary())
-                            .department(Department.builder().id(employee.department().id()).name(resultSet.getString(1)).build())
-                            .build());
-                } else {
-                    resultWithName.add(Employee.builder()
-                            .id(employee.id())
-                            .fullName(employee.fullName())
-                            .age(employee.age())
-                            .salary(employee.salary())
-                            .department(Department.builder().id(employee.department().id()).build())
-                            .build());
-                }
-            }
-
-            statement.close();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-
-        return resultWithName;
-    }
-
-    public List<Employee> findWithOutName() {
         List<Employee> result = new ArrayList<>();
 
         try {
             Statement statement = this.connection.getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM employee;");
+            ResultSet resultSet = statement.executeQuery("SELECT DISTINCT\n" +
+                    "employee.id, \n" +
+                    "employee.full_name, \n" +
+                    "employee.age, \n" +
+                    "employee.salary, \n" +
+                    "employee.department_id,\n" +
+                    "department.name FROM employee, department \n" +
+                    "WHERE department.id = employee.department_id;");
 
             while (resultSet.next()) {
                 result.add(Employee.builder()
@@ -144,7 +115,7 @@ public class PostgresEmployeeRepository implements IRepository<Employee> {
                         .fullName(resultSet.getString("full_name"))
                         .age(resultSet.getInt("age"))
                         .salary(resultSet.getInt("salary"))
-                        .department(Department.builder().id(resultSet.getInt("department_id")).build())
+                        .department(Department.builder().id(resultSet.getInt("department_id")).name("name").build())
                         .build());
             }
             statement.close();
