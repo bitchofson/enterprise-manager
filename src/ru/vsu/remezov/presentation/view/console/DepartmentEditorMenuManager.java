@@ -23,9 +23,7 @@ public class DepartmentEditorMenuManager implements MenuManager {
             departmentController.findAllDepartments().forEach(System.out::println);
             int id = input.nextInt();
             input.nextLine();
-            if (departmentController.isPresent(id)) {
-                editorPage(id);
-            }
+            if (validateId(id)) editorPage(id);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -41,7 +39,7 @@ public class DepartmentEditorMenuManager implements MenuManager {
             switch (choice) {
                 case 1 -> updatePage(id);
                 case 2 -> deletePage(id);
-                case 3 -> System.out.println("Введено неверное число!");
+                case 3 -> System.err.println("Ошибка: Введено неверное число!");
             }
 
         } catch (Exception exception) {
@@ -53,14 +51,31 @@ public class DepartmentEditorMenuManager implements MenuManager {
         try {
             System.out.println("\nВведите новое имя отдела");
             String nameNew = input.nextLine();
-            departmentController.updateDepartment(
-                    Department.builder().id(id).build(),
-                    Department.builder().name(nameNew).build()
-            );
+
+               if(validateString(nameNew)) departmentController.updateDepartment(
+                        Department.builder().id(id).build(),
+                        Department.builder().name(nameNew).build()
+                );
 
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    private boolean validateString(String value) {
+        if (value.isEmpty()) {
+            System.err.println("Ошибка: Введена пустая строка!");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateId(int value) {
+        if (!departmentController.isPresent(value)) {
+            System.err.println("Ошибка: Введен некоректный id!");
+            return false;
+        }
+        return true;
     }
 
     private void deletePage(int id) {

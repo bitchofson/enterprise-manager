@@ -9,11 +9,11 @@ import java.sql.SQLException;
 public final class PostgresStorage extends DatabaseStorage {
 
 
-    private static final int DEFAULT_DB_PORT = 5432;
-    private static final String DEFAULT_DB_NAME = "enterprise_manager_db";
-    private static final String DEFAULT_USERNAME = "xzqtbl";
-    private static final String DEFAULT_PASSWORD = "SanyaXyuCocu";
-    private static final String DEFAULT_ADRESS = "localhost";
+    private static final int DEFAULT_DB_PORT = Integer.parseInt(System.getenv("DATABASE_PORT"));
+    private static final String DEFAULT_DB_NAME = System.getenv("POSTGRES_DB");
+    private static final String DEFAULT_USERNAME = System.getenv("POSTGRES_USER");
+    private static final String DEFAULT_PASSWORD = System.getenv("POSTGRES_PASSWORD");
+    private static final String DEFAULT_ADRESS = System.getenv("POSTGRES_ADRESS");
 
     private final int    dbPort;
     private final String dbName;

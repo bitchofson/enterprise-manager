@@ -38,7 +38,9 @@ public class EmployeeCreatorMenuManager implements MenuManager {
             int id = input.nextInt();
             input.nextLine();
 
-            employeeController.createEmployee(Employee.builder()
+
+
+            if (validateProperties(fullName, age, salary, id)) employeeController.createEmployee(Employee.builder()
                     .fullName(fullName)
                     .age(age)
                     .salary(salary)
@@ -47,5 +49,29 @@ public class EmployeeCreatorMenuManager implements MenuManager {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    private boolean validateProperties(String name, int age, int salary, int id) {
+        if (name.isEmpty()) {
+            System.err.println("Ошибка: Введена пустая строка!");
+            return false;
+        }
+
+        if (age < 14) {
+            System.err.println("Ошибка: Возраст сотрудника не может быть меньше 14 лет!");
+            return false;
+        }
+
+        if (salary <= 0) {
+            System.err.println("Ошибка: Заработная плата не может быть равна либо быть меньше нуля!");
+            return false;
+        }
+
+        if (!employeeController.isPresent(id)) {
+            System.err.println("Ошибка: Введен некоректный id!");
+            return false;
+        }
+
+        return true;
     }
 }

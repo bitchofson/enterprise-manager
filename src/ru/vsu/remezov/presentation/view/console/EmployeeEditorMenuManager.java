@@ -30,11 +30,7 @@ public class EmployeeEditorMenuManager implements MenuManager {
             employeeController.findAllEmployees().forEach(System.out::println);
             int id = input.nextInt();
             input.nextLine();
-            if (employeeController.isPresent(id)) {
-                editorPage(id);
-            } else {
-                System.out.println("Такого id нет!");
-            }
+            if (validateId(id)) editorPage(id);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -71,7 +67,7 @@ public class EmployeeEditorMenuManager implements MenuManager {
             departmentController.findAllDepartments().forEach(System.out::println);
             int idDepartment = input.nextInt();
 
-            employeeController.updateEmployee(
+            if(validateProperties(name, age, salary, id)) employeeController.updateEmployee(
                     Employee.builder().id(id).build(),
                     Employee.builder().fullName(name).age(age).salary(salary).department(Department.builder().id(idDepartment).build()).build()
             );
@@ -79,6 +75,38 @@ public class EmployeeEditorMenuManager implements MenuManager {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    private boolean validateId(int value) {
+        if (!departmentController.isPresent(value)) {
+            System.err.println("Ошибка: Введен некоректный id!");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateProperties(String name, int age, int salary, int id) {
+        if (name.isEmpty()) {
+            System.err.println("Ошибка: Введена пустая строка!");
+            return false;
+        }
+
+        if (age < 14) {
+            System.err.println("Ошибка: Возраст сотрудника не может быть меньше 14 лет!");
+            return false;
+        }
+
+        if (salary <= 0) {
+            System.err.println("Ошибка: Заработная плата не может быть равна либо быть меньше нуля!");
+            return false;
+        }
+
+        if (!employeeController.isPresent(id)) {
+            System.err.println("Ошибка: Введен некоректный id!");
+            return false;
+        }
+
+        return true;
     }
 
     private void deletePage(int id) {

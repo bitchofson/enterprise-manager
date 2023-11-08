@@ -21,10 +21,17 @@ public class DepartmentCreatorMenuManager implements MenuManager {
 
             System.out.print("Введите название отдела: ");
             String name = input.nextLine();
-            departmentController.createDepartment(Department.builder().name(name).build());
-
+            if (validateString(name)) departmentController.createDepartment(Department.builder().name(name).build());
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    private boolean validateString(String value) {
+        if (value.isEmpty()) {
+            System.err.println("Ошибка: Введена пустая строка!");
+            return false;
+        }
+        return true;
     }
 }

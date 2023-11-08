@@ -27,8 +27,8 @@ public class PostgresDepartmentRepository implements IRepository<Department> {
             statement.executeUpdate();
             statement.close();
         } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+            System.out.println("Операция отменена.");
+            System.out.println("Такое имя департамента уже существует!");        }
 
         return object;
     }
@@ -63,7 +63,8 @@ public class PostgresDepartmentRepository implements IRepository<Department> {
             statement.executeUpdate();
             statement.close();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.out.println("Операция отменена.");
+            System.out.println("Такое имя департамента уже существует!");
         }
 
         return objectOld;
