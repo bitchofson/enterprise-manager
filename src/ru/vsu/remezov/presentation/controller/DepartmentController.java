@@ -7,7 +7,6 @@ import ru.vsu.remezov.usecase.implementation.DepartmentService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class DepartmentController {
     private final DepartmentService departmentService;
@@ -33,8 +32,8 @@ public class DepartmentController {
         departmentService.delete(department);
     }
 
-    public boolean isPresent(int id) {
-        return departmentService.findById(id);
+    public boolean isExist(int id) {
+        return departmentService.isExist(id);
     }
 
     public Map<String, Integer> getDepartmentSalarySums(List<Employee> employees) {

@@ -1,7 +1,6 @@
 package ru.vsu.remezov.infrastructure.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IRepository<T> {
 
@@ -11,7 +10,7 @@ public interface IRepository<T> {
 
     T update(T objectOld, T objectNew);
 
-    boolean findById(int id);
+    boolean isExist(int id);
 
     List<T> findAll();
 }

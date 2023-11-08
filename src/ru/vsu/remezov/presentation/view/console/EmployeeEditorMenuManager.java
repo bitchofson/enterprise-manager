@@ -78,7 +78,7 @@ public class EmployeeEditorMenuManager implements MenuManager {
     }
 
     private boolean validateId(int value) {
-        if (!departmentController.isPresent(value)) {
+        if (!departmentController.isExist(value)) {
             System.err.println("Ошибка: Введен некоректный id!");
             return false;
         }
@@ -101,7 +101,7 @@ public class EmployeeEditorMenuManager implements MenuManager {
             return false;
         }
 
-        if (!employeeController.isPresent(id)) {
+        if (!employeeController.isExist(id)) {
             System.err.println("Ошибка: Введен некоректный id!");
             return false;
         }

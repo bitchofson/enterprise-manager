@@ -67,7 +67,7 @@ public class EmployeeCreatorMenuManager implements MenuManager {
             return false;
         }
 
-        if (!employeeController.isPresent(id)) {
+        if (!departmentController.isExist(id)) {
             System.err.println("Ошибка: Введен некоректный id!");
             return false;
         }

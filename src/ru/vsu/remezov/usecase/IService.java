@@ -10,7 +10,7 @@ public interface IService<T> {
 
     void update(T objectOld, T objectNew);
 
-    boolean findById(int id);
+    boolean isExist(int id);
 
     List<T> findAll();
 

@@ -31,8 +31,8 @@ public class EmployeeController {
         return employeeService.findAll();
     }
 
-    public boolean isPresent(int id) {
-        return employeeService.findById(id);
+    public boolean isExist(int id) {
+        return employeeService.isExist(id);
     }
 
 }

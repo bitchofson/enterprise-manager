@@ -32,8 +32,8 @@ public class DepartmentService implements IService<Department> {
     }
 
     @Override
-    public boolean findById(int id) {
-        return IRepository.findById(id);
+    public boolean isExist(int id) {
+        return IRepository.isExist(id);
     }
 
     @Override
