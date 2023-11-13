@@ -99,9 +99,10 @@ public class PostgresEmployeeRepository implements IRepository<Employee> {
                 employee.full_name,
                 employee.age,
                 employee.salary,
-                employee.department_id,
-                department.name FROM employee, department
-                WHERE department.id = employee.department_id;
+                department.id AS department_id,
+                COALESCE(department.name, 'Без отдела') AS department_name
+                FROM employee
+                LEFT JOIN department ON employee.department_id = department.id;
                 """;
 
         try (PreparedStatement statement = this.connection.getConnection().prepareStatement(sql)){
@@ -112,7 +113,7 @@ public class PostgresEmployeeRepository implements IRepository<Employee> {
                             .fullName(resultSet.getString("full_name"))
                             .age(resultSet.getInt("age"))
                             .salary(resultSet.getInt("salary"))
-                            .department(Department.builder().id(resultSet.getInt("department_id")).name(resultSet.getString("name")).build())
+                            .department(Department.builder().id(resultSet.getInt("department_id")).name(resultSet.getString("department_name")).build())
                             .build());
             }
             }
