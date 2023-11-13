@@ -28,6 +28,6 @@ public record Department(int id, String name) {
 
     @Override
     public String toString() {
-        return "Название департамента: " + this.name + "(" +this.id + ")";
+        return "id: " + this.id + " Название департамента: " + this.name;
     }
 }
